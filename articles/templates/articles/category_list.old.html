@@ -1,0 +1,98 @@
+{% extends 'core/base/base.html' %}
+{% load static %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<section id="main-content">
+  <section class="wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h3 class="page-header"><i class="fa fa-table"></i>List</h3>
+			<div class="col-sm-4">
+			<h2 class="text-center">Categories <b>Details</b></h2>
+		</div>
+	</div>
+
+<main role="main">
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+		{% endif %}
+        </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Next</a> 
+    	{% endif %}
+    </li>
+</ul> 
+
+<!--URL: https://www.tutorialrepublic.com/snippets/preview.php?topic=bootstrap&file=elegant-table-design-->
+<div class="table-wrapper" id="list-products-table">	
+		<div class="table-title">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="show-entries">
+							<a href="" target="_blank" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE8AD;</i></a>
+						<!--<span>Show</span>
+						<select>
+							<option>5</option>
+							<option>10</option>
+							<option>15</option>
+							<option>20</option>
+						</select>
+						<span>entries</span>-->
+					</div>						
+				</div>
+				<div class="col-sm-4">
+					<h2 class="text-center">Categories <b>Details</b></h2>
+				</div>
+				<div class="col-sm-4">
+					<!--<div class="search-box">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+							<input type="text" class="form-control" placeholder="Search&hellip;">
+						</div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name <i class="fa fa-sort"></i></th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if category_list %}
+				{% for category in category_list|dictsort:"name" %}
+				<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>
+							<a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+						</td>
+					<td>
+						<a href="" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+						{% if request.user.is_staff %}
+							<a href="{% url 'articles:category-update' category.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+							<a href="{% url 'articles:category-delete' category.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+		
+				{% else %}
+				<h1>Not records of Categories</h1>
+				{% endif %}
+				       
+			</tbody>
+		</table>
+		<div class="clearfix">
+			{% include 'core/includes/pagination.html' %}
+		</div>
+	</div>
+</main>
+</section>
+</section>
+{% endblock %}
