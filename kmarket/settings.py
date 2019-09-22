@@ -157,3 +157,5 @@ if DEBUG:
 else:
     # Configurar emal real para producción
     pass
+
+PATH_BCK = os.path.join(BASE_DIR, 'bck')
