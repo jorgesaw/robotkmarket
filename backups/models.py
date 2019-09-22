@@ -5,6 +5,8 @@ from django.db import models
 from django.core.management import call_command
 from django.db import transaction
 from django.conf import settings
+from django.db.models.signals import post_init
+from django.dispatch import receiver
 
 from sales.models import Sale
 from overheads.models import Overhead
@@ -85,7 +87,7 @@ class BackUp(models.Model):
     def save(self, *args, **kwargs):
         super(BackUp, self).save(*args, **kwargs)
 
-        self.provider_bck = SQLiteProviderBck(filename=str(self.created))
+        #self.provider_bck = SQLiteProviderBck(filename=str(self.created))
         if not self.provider_bck.create_bck():
             return
 
@@ -102,3 +104,7 @@ class BackUp(models.Model):
 
     def __str__(self):
         return str(self.created)
+
+@receiver(post_init, sender=BackUp)
+def update_provider_bck(sender, instance, **kwargs):
+    instance.provider_bck = SQLiteProviderBck(filename=str(instance.created))

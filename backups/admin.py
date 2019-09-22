@@ -13,12 +13,18 @@ class BackUpAdmin(admin.ModelAdmin):
         }),
     )
     readonly_fields = ('created',)
-    list_display = ('created', 'desc', 'restore')
+    list_display = ('created', 'desc')
     ordering = ('-created',)
     search_fields = ('created',)
     date_hierarchy = 'created' # Jerarquizar por fechas
     list_filter = ('created', )
     actions = ['load_restore_data',]
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
     def load_restore_data(self, request, queryset):
         level = messages.INFO
@@ -33,12 +39,5 @@ class BackUpAdmin(admin.ModelAdmin):
 
         return self.message_user(request, msg, level)
     load_restore_data.short_description = "Restaurar datos"
-
-    def restore(self, obj):
-        return 'RESTAURAR'
-        link = reverse("admin:articles_category_change", args=[obj.category.id])
-        return format_html('<a href="{}">{}</a>', link, obj.category.name)
-        
-    restore.short_description = "Datos"
 
 admin.site.register(BackUp, BackUpAdmin)
