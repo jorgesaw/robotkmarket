@@ -55,7 +55,7 @@ LOCAL_APPS = (
     'customers.apps.CustomersConfig', 
     'overheads.apps.OverheadsConfig', 
     'locations.apps.LocationsConfig', 
-    'backups.apps.BackupsConfig',  
+    'backups.apps.BackupsConfig', 
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
